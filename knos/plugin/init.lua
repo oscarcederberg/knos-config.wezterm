@@ -1,22 +1,46 @@
-local wezterm = require 'wezterm'
+local wezterm = require ("wezterm")
 local module = {}
-local action = wezterm.action
 
-function module.apply_to_config (config)
+local function apply_appearance (config)
+  config.color_scheme = 'Gruvbox Dark (Gogh)'
+  config.font = wezterm.font_with_fallback ({
+    "Noto Sans Mono",
+    "Noto Color Emoji"
+  })
+
+  config.window_background_opacity = 0.75
+
+  config.use_fancy_tab_bar = false
+  config.hide_tab_bar_if_only_one_tab = true
+end
+
+local function apply_bindings (config)
+  local action = wezterm.action
+
   config.disable_default_key_bindings = true
 
   config.keys = {
     {
       key = 'c', mods = 'ALT',
-      action = action.CopyTo 'ClipboardAndPrimarySelection',
+      action = action.CopyTo 'ClipboardAndPrimarySelection'
     },
     {
       key = 'v', mods = 'ALT',
-      action = action.PasteFrom 'Clipboard',
+      action = action.PasteFrom 'Clipboard'
     },
     {
       key = 'r', mods = 'ALT',
-      action = wezterm.action.ReloadConfiguration,
+      action = wezterm.action.Multiple ({
+        wezterm.action.ReloadConfiguration,
+
+        wezterm.action_callback (function (_, _)
+          wezterm.plugin.update_all ()
+        end),
+      })
+    },
+    {
+      key = 'L', mods = 'CTRL',
+      action = action.ShowDebugOverlay
     },
     {
       key = 'PageUp', mods = 'ALT',
@@ -83,6 +107,19 @@ function module.apply_to_config (config)
       action = action.ActivateTab(i - 1),
     })
   end
+end
+
+local function apply_settings (config)
+  config.initial_cols = 120
+  config.initial_rows = 24
+
+  config.warn_about_missing_glyphs = false
+end
+
+function module.apply_to_config (config)
+  apply_appearance (config)
+  apply_bindings (config)
+  apply_settings (config)
 end
 
 return module
