@@ -109,8 +109,8 @@ local function apply_bindings (config)
     
     table.insert(config.keys, {
       key = tostring(i),
-      mods = 'SHIFT|ALT`,
-      action = wezterm.action.MoveTab(i - 1),
+      mods = 'SHIFT|ALT',
+      action = action.MoveTab(i - 1),
     }
   end
 end
