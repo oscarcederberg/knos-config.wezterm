@@ -111,7 +111,7 @@ local function apply_bindings (config)
       key = tostring(i),
       mods = 'SHIFT|ALT',
       action = action.MoveTab(i - 1),
-    }
+    })
   end
 end
 
