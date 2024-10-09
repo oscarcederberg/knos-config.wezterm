@@ -8,6 +8,11 @@ local function apply_appearance (config)
     "Noto Color Emoji"
   })
 
+  config.inactive_pane_hsb = {
+    saturation = 0.75,
+    brightness = 0.66,
+  }
+
   config.window_background_opacity = 0.75
 
   config.use_fancy_tab_bar = false
@@ -79,6 +84,31 @@ local function apply_bindings (config)
       action = action.ResetFontSize,
     },
     {
+      key = '\\',
+      mods = 'CTRL',
+      action = wezterm.action.SplitVertical {},
+    },
+    {
+      key = '\\',
+      mods = 'SHIFT|CTRL',
+      action = wezterm.action.SplitHorizontal {},
+    },
+    {
+      key = 'q',
+      mods = 'CTRL',
+      action = wezterm.action.CloseCurrentPane { confirm = false },
+    },
+    {
+      key = 'Tab',
+      mods = 'CTRL',
+      action = wezterm.action.ActivatePaneDirection('Next'),
+    },
+    {
+      key = 'Tab',
+      mods = 'SHIFT|CTRL',
+      action = wezterm.action.ActivatePaneDirection('Prev'),
+    },
+    {
       key = 't',
       mods = 'ALT',
       action = action.SpawnTab 'CurrentPaneDomain',
@@ -100,13 +130,29 @@ local function apply_bindings (config)
     },
   }
 
+  for _, direction in pairs({'Left', 'Up', 'Right', 'Down'}) do
+    table.insert(config.keys, {
+        key = string.format('%sArrow', direction),
+        mods = 'CTRL',
+        action = wezterm.action.ActivatePaneDirection(direction),
+      }
+    )
+
+    table.insert(config.keys, {
+        key = string.format('%sArrow', direction),
+        mods = 'SHIFT|CTRL',
+        action = wezterm.action.AdjustPaneSize {direction, 1},
+      }
+    )
+  end
+
   for i = 1, 8 do
     table.insert(config.keys, {
       key = tostring(i),
       mods = 'ALT',
       action = action.ActivateTab(i - 1),
     })
-    
+
     table.insert(config.keys, {
       key = tostring(i),
       mods = 'SHIFT|ALT',
