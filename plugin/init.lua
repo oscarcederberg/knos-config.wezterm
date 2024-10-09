@@ -89,7 +89,7 @@ local function apply_bindings (config)
       action = wezterm.action.SplitVertical {},
     },
     {
-      key = '\\',
+      key = '|',
       mods = 'SHIFT|CTRL',
       action = wezterm.action.SplitHorizontal {},
     },
