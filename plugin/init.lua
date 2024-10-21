@@ -58,7 +58,7 @@ local function apply_bindings (config)
       })
     },
     {
-      key = 'l', mods = 'SHIFT|CTRL',
+      key = 'l', mods = 'SHIFT|ALT',
       action = action.ShowDebugOverlay
     },
     {
