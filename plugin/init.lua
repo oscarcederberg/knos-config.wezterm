@@ -48,7 +48,7 @@ local function apply_bindings (config)
       action = action.PasteFrom 'Clipboard'
     },
     {
-      key = 'r', mods = 'ALT',
+      key = 'r', mods = 'SHIFT|ALT',
       action = wezterm.action.Multiple ({
         wezterm.action.ReloadConfiguration,
 
@@ -58,7 +58,7 @@ local function apply_bindings (config)
       })
     },
     {
-      key = 'L', mods = 'CTRL',
+      key = 'l', mods = 'SHIFT|CTRL',
       action = action.ShowDebugOverlay
     },
     {
@@ -113,6 +113,14 @@ local function apply_bindings (config)
       action = wezterm.action.CloseCurrentPane { confirm = false },
     },
     {
+      key = 's',
+      mods = 'SHIFT|CTRL',
+      action = wezterm.action.PaneSelect {
+        alphabet = '1234567890',
+        mode = 'SwapWithActive',
+      },
+    },
+    {
       key = 'Tab',
       mods = 'CTRL',
       action = wezterm.action.ActivatePaneDirection('Next'),
@@ -138,6 +146,22 @@ local function apply_bindings (config)
       action = action.CloseCurrentTab { confirm = true },
     },
     {
+      key = 'r',
+      mods = 'ALT',
+      action = action.PromptInputLine {
+        description = 'enter new name for tab',
+        initial_value = 'new tab',
+        action = wezterm.action_callback(function(window, pane, line)
+          -- line will be `nil` if they hit escape without entering anything
+          -- An empty string if they just hit enter
+          -- Or the actual line of text they wrote
+          if line then
+            window:active_tab():set_title(line)
+          end
+        end),
+      },
+    },
+    {
       key = "Tab",
       mods = 'ALT',
       action = action.ActivateTabRelative(1),
@@ -154,13 +178,6 @@ local function apply_bindings (config)
         key = string.format('%sArrow', direction),
         mods = 'CTRL',
         action = wezterm.action.ActivatePaneDirection(direction),
-      }
-    )
-
-    table.insert(config.keys, {
-        key = string.format('%sArrow', direction),
-        mods = 'CTRL|ALT',
-        action = wezterm.action_callback(switch_in_direction(direction)),
       }
     )
 
