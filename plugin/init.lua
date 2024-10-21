@@ -1,6 +1,20 @@
 local wezterm = require ("wezterm")
 local module = {}
 
+-- Helper Functions
+
+local function switch_in_direction(dir)
+    return function(window)
+        local tab = window:active_tab()
+        local next_pane = tab:get_pane_direction(dir)
+        if next_pane then
+            tab.swap_active_with_index(next_pane, true)
+        end
+    end
+end
+
+-- Apply Functions
+
 local function apply_appearance (config)
   config.color_scheme = 'Gruvbox Dark (Gogh)'
   config.font = wezterm.font_with_fallback ({
@@ -109,6 +123,11 @@ local function apply_bindings (config)
       action = wezterm.action.ActivatePaneDirection('Prev'),
     },
     {
+      key = 'f',
+      mods = 'CTRL',
+      action = wezterm.action.TogglePaneZoomState,
+    },
+    {
       key = 't',
       mods = 'ALT',
       action = action.SpawnTab 'CurrentPaneDomain',
@@ -116,7 +135,7 @@ local function apply_bindings (config)
     {
       key = 'q',
       mods = 'ALT',
-      action = action.CloseCurrentTab { confirm = false },
+      action = action.CloseCurrentTab { confirm = true },
     },
     {
       key = "Tab",
@@ -140,6 +159,13 @@ local function apply_bindings (config)
 
     table.insert(config.keys, {
         key = string.format('%sArrow', direction),
+        mods = 'CTRL|ALT',
+        action = wezterm.action_callback(switch_in_direction(direction)),
+      }
+    )
+
+    table.insert(config.keys, {
+        key = string.format('%sArrow', direction),
         mods = 'SHIFT|CTRL',
         action = wezterm.action.AdjustPaneSize {direction, 1},
       }
@@ -155,7 +181,7 @@ local function apply_bindings (config)
 
     table.insert(config.keys, {
       key = tostring(i),
-      mods = 'SHIFT|ALT',
+      mods = 'CTRL|ALT',
       action = action.MoveTab(i - 1),
     })
   end
