@@ -150,7 +150,6 @@ local function apply_bindings (config)
       mods = 'ALT',
       action = action.PromptInputLine {
         description = 'enter new name for tab',
-        initial_value = 'new tab',
         action = wezterm.action_callback(function(window, pane, line)
           -- line will be `nil` if they hit escape without entering anything
           -- An empty string if they just hit enter
