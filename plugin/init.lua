@@ -1,18 +1,6 @@
 local wezterm = require ("wezterm")
 local module = {}
 
--- Helper Functions
-
-local function switch_in_direction(dir)
-    return function(window)
-        local tab = window:active_tab()
-        local next_pane = tab:get_pane_direction(dir)
-        if next_pane then
-            tab.swap_active_with_index(next_pane, true)
-        end
-    end
-end
-
 -- Apply Functions
 
 local function apply_appearance (config)
@@ -49,8 +37,8 @@ local function apply_bindings (config)
     },
     {
       key = 'r', mods = 'SHIFT|ALT',
-      action = wezterm.action.Multiple ({
-        wezterm.action.ReloadConfiguration,
+      action = action.Multiple ({
+        action.ReloadConfiguration,
 
         wezterm.action_callback (function (_, _)
           wezterm.plugin.update_all ()
@@ -78,11 +66,11 @@ local function apply_bindings (config)
       action = action.ScrollToPrompt(1)
     },
     {
-      key = 'UpArrow', mods = 'ALT|CTRL',
+      key = 'UpArrow', mods = 'SHIFT|ALT',
       action = action.ScrollByLine(-1)
     },
     {
-      key = 'DownArrow', mods = 'ALT|CTRL',
+      key = 'DownArrow', mods = 'SHIFT|ALT',
       action = action.ScrollByLine(1)
     },
     {
@@ -100,22 +88,22 @@ local function apply_bindings (config)
     {
       key = '\\',
       mods = 'CTRL',
-      action = wezterm.action.SplitVertical {},
+      action = action.SplitVertical {},
     },
     {
       key = '|',
       mods = 'SHIFT|CTRL',
-      action = wezterm.action.SplitHorizontal {},
+      action = action.SplitHorizontal {},
     },
     {
       key = 'q',
       mods = 'CTRL',
-      action = wezterm.action.CloseCurrentPane { confirm = false },
+      action = action.CloseCurrentPane { confirm = false },
     },
     {
       key = 's',
       mods = 'SHIFT|CTRL',
-      action = wezterm.action.PaneSelect {
+      action = action.PaneSelect {
         alphabet = '1234567890',
         mode = 'SwapWithActive',
       },
@@ -123,17 +111,17 @@ local function apply_bindings (config)
     {
       key = 'Tab',
       mods = 'CTRL',
-      action = wezterm.action.ActivatePaneDirection('Next'),
+      action = action.ActivatePaneDirection('Next'),
     },
     {
       key = 'Tab',
       mods = 'SHIFT|CTRL',
-      action = wezterm.action.ActivatePaneDirection('Prev'),
+      action = action.ActivatePaneDirection('Prev'),
     },
     {
       key = 'f',
       mods = 'CTRL',
-      action = wezterm.action.TogglePaneZoomState,
+      action = action.TogglePaneZoomState,
     },
     {
       key = 't',
@@ -176,14 +164,14 @@ local function apply_bindings (config)
     table.insert(config.keys, {
         key = string.format('%sArrow', direction),
         mods = 'CTRL',
-        action = wezterm.action.ActivatePaneDirection(direction),
+        action = action.ActivatePaneDirection(direction),
       }
     )
 
     table.insert(config.keys, {
         key = string.format('%sArrow', direction),
         mods = 'SHIFT|CTRL',
-        action = wezterm.action.AdjustPaneSize {direction, 1},
+        action = action.AdjustPaneSize {direction, 1},
       }
     )
   end

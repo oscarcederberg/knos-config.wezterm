@@ -12,7 +12,7 @@ knos-config | My Wezterm configuration
 | `ALT + SHIFT + r`            | Reload Wezterm                  |
 | `ALT + PAGEUP/PAGEDOWN`      | Move by one screen up/down      |
 | `ALT + UP/DOWN`              | Move by one prompt up/down      |
-| `ALT + CTRL + UP/DOWN`       | Move by one line up/down        |
+| `SHIFT + ALT + UP/DOWN`      | Move by one line up/down        |
 | `CTRL + =/-`                 | Increase/Decrease font size     |
 | `CTRL + 0`                   | Reset font size                 |
 | `CTRL + \`                   | Split pane vertically           |
