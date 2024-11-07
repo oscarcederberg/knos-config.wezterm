@@ -18,7 +18,7 @@ local function apply_appearance(config)
   config.window_background_opacity = 0.75
 
   config.use_fancy_tab_bar = false
-  config.hide_tab_bar_if_only_one_tab = true
+  config.hide_tab_bar_if_only_one_tab = false
 end
 
 local function apply_bindings(config)
@@ -54,10 +54,19 @@ local function apply_bindings(config)
       })
     },
     {
+      key = 'l',
+      mods = 'LEADER',
+      action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
+    },
+    {
       key = 'n',
       mods = 'LEADER',
       action = action.PromptInputLine {
-        description = 'Enter name for new session',
+        description = wezterm.format {
+          { Attribute = { Intensity = 'Bold' } },
+          { Foreground = { AnsiColor = 'Yellow' } },
+          { Text = 'Enter name for new session' },
+        },
         action = wezterm.action_callback(function(window, pane, line)
           if line then
             window:perform_action(
@@ -69,20 +78,14 @@ local function apply_bindings(config)
       },
     },
     {
-      key = "s",
-      mods = "LEADER",
-      action = action { EmitEvent = "save_session" }
-    },
-    {
-      key = "l",
-      mods = "LEADER",
-      action = action { EmitEvent = "restore_session" }
-    },
-    {
       key = "r",
       mods = "LEADER",
       action = action.PromptInputLine {
-        description = 'Enter new name for session',
+        description = wezterm.format {
+          { Attribute = { Intensity = 'Bold' } },
+          { Foreground = { AnsiColor = 'Yellow' } },
+          { Text = 'Enter new name for session' },
+        },
         action = wezterm.action_callback(function(window, pane, line)
           if line then
             wezterm.mux.rename_workspace(
@@ -190,11 +193,12 @@ local function apply_bindings(config)
       key = 'r',
       mods = 'ALT',
       action = action.PromptInputLine {
-        description = 'enter new name for tab',
+        description = wezterm.format {
+          { Attribute = { Intensity = 'Bold' } },
+          { Foreground = { AnsiColor = 'Yellow' } },
+          { Text = 'Enter new name for tab' },
+        },
         action = wezterm.action_callback(function(window, pane, line)
-          -- line will be `nil` if they hit escape without entering anything
-          -- An empty string if they just hit enter
-          -- Or the actual line of text they wrote
           if line then
             window:active_tab():set_title(line)
           end

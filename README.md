@@ -11,9 +11,8 @@ knos-config | My Wezterm configuration
 | `ALT + \, SHIFT + l`         | Show debug overlay              |
 | `ALT + \, SHIFT + r`         | Reload Wezterm                  |
 | `ALT + \, n`                 | Spawn new session               |
-| `ALT + \, s`                 | Save current session            |
 | `ALT + \, r`                 | Rename current session          |
-| `ALT + \, l`                 | Restore current session         |
+| `ALT + \, l`                 | List sessions                   |
 | `ALT + PAGEUP/PAGEDOWN`      | Move by one screen up/down      |
 | `ALT + UP/DOWN`              | Move by one prompt up/down      |
 | `CTRL + ALT + UP/DOWN`       | Move by one line up/down        |
