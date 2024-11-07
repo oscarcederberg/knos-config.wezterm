@@ -66,11 +66,11 @@ local function apply_bindings (config)
       action = action.ScrollToPrompt(1)
     },
     {
-      key = 'UpArrow', mods = 'SHIFT|ALT',
+      key = 'UpArrow', mods = 'CTRL|ALT',
       action = action.ScrollByLine(-1)
     },
     {
-      key = 'DownArrow', mods = 'SHIFT|ALT',
+      key = 'DownArrow', mods = 'CTRL|ALT',
       action = action.ScrollByLine(1)
     },
     {
