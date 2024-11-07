@@ -57,7 +57,7 @@ local function apply_bindings(config)
       key = 'n',
       mods = 'LEADER',
       action = action.PromptInputLine {
-        description = 'Enter name for new workspace',
+        description = 'Enter name for new session',
         action = wezterm.action_callback(function(window, pane, line)
           if line then
             window:perform_action(
@@ -76,12 +76,22 @@ local function apply_bindings(config)
     {
       key = "l",
       mods = "LEADER",
-      action = action { EmitEvent = "load_session" }
+      action = action { EmitEvent = "restore_session" }
     },
     {
       key = "r",
       mods = "LEADER",
-      action = action { EmitEvent = "restore_session" }
+      action = action.PromptInputLine {
+        description = 'Enter new name for session',
+        action = wezterm.action_callback(function(window, pane, line)
+          if line then
+            wezterm.mux.rename_workspace(
+              wezterm.mux.get_active_workspace(),
+              line
+            )
+          end
+        end),
+      },
     },
     {
       key = 'PageUp',
