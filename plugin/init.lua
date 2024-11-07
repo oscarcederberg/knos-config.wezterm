@@ -62,7 +62,7 @@ local function apply_bindings(config)
           if line then
             window:perform_action(
               action.SwitchToWorkspace { name = line, },
-              pane,
+              pane
             )
           end
         end),
