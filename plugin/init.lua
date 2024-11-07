@@ -56,7 +56,7 @@ local function apply_bindings(config)
     {
       key = 'l',
       mods = 'LEADER',
-      action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
+      action = wezterm.action.ShowLauncherArgs { flags = 'WORKSPACES' },
     },
     {
       key = 'n',
