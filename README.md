@@ -8,8 +8,12 @@ knos-config | My Wezterm configuration
 | Keys                         | Action                          |
 |------------------------------|---------------------------------|
 | `ALT + c/v`                  | Copy/Paste                      |
-| `ALT + SHIFT + l`            | Show debug overlay              |
-| `ALT + SHIFT + r`            | Reload Wezterm                  |
+| `ALT + \, SHIFT + l`         | Show debug overlay              |
+| `ALT + \, SHIFT + r`         | Reload Wezterm                  |
+| `ALT + \, n`                 | Spawn new session               |
+| `ALT + \, s`                 | Save current session            |
+| `ALT + \, l`                 | Load current session            |
+| `ALT + \, r`                 | Restore current session         |
 | `ALT + PAGEUP/PAGEDOWN`      | Move by one screen up/down      |
 | `ALT + UP/DOWN`              | Move by one prompt up/down      |
 | `CTRL + ALT + UP/DOWN`       | Move by one line up/down        |
