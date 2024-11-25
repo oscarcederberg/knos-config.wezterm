@@ -233,7 +233,7 @@ local function apply_bindings(config)
     )
   end
 
-  for i = 1, 8 do
+  for i = 1, 9 do
     table.insert(config.keys, {
       key = tostring(i),
       mods = 'ALT',
