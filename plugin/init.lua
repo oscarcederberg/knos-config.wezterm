@@ -4,8 +4,8 @@ local module = {}
 -- Utility Functions
 
 local function appendMultiple(table, ...)
-  for k, v in pairs({ ... }) do
-    table[k] = v
+  for i = 1, select('#', ...) do
+    table[#table + 1] = select(i, ...)
   end
 end
 
@@ -202,7 +202,7 @@ local function apply_bindings(config, opts)
   end
 
   if not opts.disable_pane_keybindings then
-    appendMultiple(table, {
+    appendMultiple(config.keys, {
         key = '\\',
         mods = 'CTRL',
         action = action.SplitVertical {},
