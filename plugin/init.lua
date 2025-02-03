@@ -1,6 +1,14 @@
 local wezterm = require("wezterm")
 local module = {}
 
+-- Utility Functions
+
+local function appendMultiple(table, ...)
+  for k, v in pairs({ ... }) do
+    table[k] = v
+  end
+end
+
 -- Apply Functions
 
 local function apply_appearance(config)
@@ -21,7 +29,7 @@ local function apply_appearance(config)
   config.hide_tab_bar_if_only_one_tab = false
 end
 
-local function apply_bindings(config)
+local function apply_bindings(config, opts)
   local action = wezterm.action
 
   config.disable_default_key_bindings = true
@@ -142,44 +150,6 @@ local function apply_bindings(config)
       action = action.ResetFontSize,
     },
     {
-      key = '\\',
-      mods = 'CTRL',
-      action = action.SplitVertical {},
-    },
-    {
-      key = '|',
-      mods = 'SHIFT|CTRL',
-      action = action.SplitHorizontal {},
-    },
-    {
-      key = 'q',
-      mods = 'CTRL',
-      action = action.CloseCurrentPane { confirm = false },
-    },
-    {
-      key = 's',
-      mods = 'SHIFT|CTRL',
-      action = action.PaneSelect {
-        alphabet = '1234567890',
-        mode = 'SwapWithActive',
-      },
-    },
-    {
-      key = 'Tab',
-      mods = 'CTRL',
-      action = action.ActivatePaneDirection('Next'),
-    },
-    {
-      key = 'Tab',
-      mods = 'SHIFT|CTRL',
-      action = action.ActivatePaneDirection('Prev'),
-    },
-    {
-      key = 'f',
-      mods = 'CTRL',
-      action = action.TogglePaneZoomState,
-    },
-    {
       key = 't',
       mods = 'ALT',
       action = action.SpawnTab 'CurrentPaneDomain',
@@ -217,22 +187,6 @@ local function apply_bindings(config)
     },
   }
 
-  for _, direction in pairs({ 'Left', 'Up', 'Right', 'Down' }) do
-    table.insert(config.keys, {
-      key = string.format('%sArrow', direction),
-      mods = 'CTRL',
-      action = action.ActivatePaneDirection(direction),
-    }
-    )
-
-    table.insert(config.keys, {
-      key = string.format('%sArrow', direction),
-      mods = 'SHIFT|CTRL',
-      action = action.AdjustPaneSize { direction, 1 },
-    }
-    )
-  end
-
   for i = 1, 9 do
     table.insert(config.keys, {
       key = tostring(i),
@@ -246,6 +200,62 @@ local function apply_bindings(config)
       action = action.MoveTab(i - 1),
     })
   end
+
+  if not opts.disable_pane_keybindings then
+    appendMultiple(table, {
+        key = '\\',
+        mods = 'CTRL',
+        action = action.SplitVertical {},
+      },
+      {
+        key = '|',
+        mods = 'SHIFT|CTRL',
+        action = action.SplitHorizontal {},
+      },
+      {
+        key = 'q',
+        mods = 'CTRL',
+        action = action.CloseCurrentPane { confirm = false },
+      },
+      {
+        key = 's',
+        mods = 'SHIFT|CTRL',
+        action = action.PaneSelect {
+          alphabet = '1234567890',
+          mode = 'SwapWithActive',
+        },
+      },
+      {
+        key = 'Tab',
+        mods = 'CTRL',
+        action = action.ActivatePaneDirection('Next'),
+      },
+      {
+        key = 'Tab',
+        mods = 'SHIFT|CTRL',
+        action = action.ActivatePaneDirection('Prev'),
+      },
+      {
+        key = 'f',
+        mods = 'CTRL',
+        action = action.TogglePaneZoomState,
+      }
+    )
+
+    for _, direction in pairs({ 'Left', 'Up', 'Right', 'Down' }) do
+      table.insert(config.keys, {
+        key = string.format('%sArrow', direction),
+        mods = 'CTRL',
+        action = action.ActivatePaneDirection(direction),
+      })
+
+      table.insert(config.keys, {
+        key = string.format('%sArrow', direction),
+        mods = 'SHIFT|CTRL',
+        action = action.AdjustPaneSize { direction, 1 },
+      })
+    end
+  end
 end
 
 local function apply_settings(config)
@@ -255,10 +265,12 @@ local function apply_settings(config)
   config.warn_about_missing_glyphs = false
 end
 
-function module.apply_to_config(config)
+---@param config unknown
+---@param opts { disable_pane_keybindings: boolean? }
+function module.apply_to_config(config, opts)
   wezterm.log_info("applying knos-config")
   apply_appearance(config)
-  apply_bindings(config)
+  apply_bindings(config, opts)
   apply_settings(config)
 end
 
